@@ -1,0 +1,23 @@
+{
+  "name": "skitBot",
+  "version": "0.0.0",
+  "description": "A Reddit bot of dubious usefulness",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "keywords": [
+    "reddit",
+    "skit",
+    "sketch"
+  ],
+  "author": "Joe Lepper",
+  "license": "MIT",
+  "dependencies": {
+    "needle": "~0.6.3",
+    "request": "~2.33.0",
+    "querystring": "~0.2.0",
+    "yargs": "~1.0.15"
+  }
+}
