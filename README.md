@@ -6,7 +6,7 @@ To run an instance of skitbot simply (make sure that you have node installed):
 
 1. clone this repo
 2. run `npm install`
-3. `node index.js --user=USERNAME --pass=PASSWORD
+3. `node index.js --user=USERNAME --pass=PASSWORD`
 
 ## altering the bot's behavior
 
