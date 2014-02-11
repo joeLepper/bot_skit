@@ -1,138 +1,68 @@
 var needle   = require('needle')
-  , request  = require('request')
-  , strings  = [' skit ', ' skits ']
+  , login    = require('./login')
+  , read     = require('./comment_reader')
+
   , youngest = Date.now()
   , argv     = require('yargs').argv
   , modhash
-  , cookie;
+  , cookie
+  , credentials = []
+  , players  = (
+      [ { name : 'SketchNotSkit'
+        , pass : 'noskits' }
+      , { name : 'a_bit_pedantic'
+        , pass : 'pedantic' } ] );
+
 
 exports.result      = {};
 exports.queue       = [];
-exports.found       = [];
-exports.login       = login;
-exports.workQueue   = workQueue;
-exports.postComment = postComment;
-exports.fetch       = fetchComments;
-exports.checkUser   = checkUser;
 
-request.defaults({jar:true});
-exports.login();
-setInterval(exports.fetch, 2000);
+// start to look for the term 'skit'
+setInterval(function() {
+  read(function(id) {
+    exports.queue.push(id);
+  });
+}, 2000);
+createPlayers(players);
 
-function targetsContain (targets) {
-  for (var i = 0; i < targets.length; i++) {
-    for (var j = 0; j < strings.length; j++) {
-      if (targets[i].indexOf(strings[j]) !== -1) {
-        return true;
+function createPlayers (players) {
+  console.log('creating players');
+  var numLoggedIn = 1;
+  // for each player
+  for (var i = 0; i < players.length; i++) {
+    login(players[i], function(cred) {
+      credentials.push(cred);
+      if (numLoggedIn === players.length) {
+        setInterval(function() {
+          console.log('seeking comments')
+          if (exports.queue.length) {
+            postSkitComment(exports.queue.shift());
+          }
+        }, 3000);
+        numLoggedIn++;
       }
-    }
-  }
-  return false;
-}
-
-function postComment (parentId) {
-  var text     = 'I think you mean [sketch](http://en.wikipedia.org/wiki/Sketch_comedy).'
-    , options  = {
-        url      : 'https://en.reddit.com/api/comment?api_type=json&text=' + encodeURIComponent(text) + '&thing_id=' + parentId,
-        headers  : {
-            'User-Agent' : 'skitBot/0.1 by SketchNotSkit',
-            'X-Modhash'  : modhash,
-            'Cookie' : 'reddit_session=' + encodeURIComponent(cookie)
-          },
-        method : 'POST'      };
-
-  request(options, function (err, res, body) {
-    if (err) {
-      console.log('caught an error posting a comment, here\'s the hash:');
-      console.log(err.stack);
-      return;
-    } else {
-      console.log('// ------ //');
-      // console.log(body);
-      console.log('// ------ //');
-    }
-  });
-}
-
-function checkUser () {
-  var options = {
-        url      : 'https://en.reddit.com/api/me.json',
-        headers  : {
-            'User-Agent' : 'skitBot/0.1 by SketchNotSkit',
-            'X-Modhash'  : modhash,
-            'Cookie' : 'reddit_session=' + encodeURIComponent(cookie)
-          },
-        method : 'GET',
-      };
-
-  request(options, function (err, res, body) {
-    if (err) {
-      console.log(err);
-      return;
-    } else {
-      console.log('// ------ //');
-      console.log(body);
-      console.log('// ------ //');
-    }
-  });
-}
-
-
-function workQueue () {
-  if (exports.queue.length) {
-    postComment(exports.queue.shift());
+    });
   }
 }
 
-function login () {
-  var options = {
-      url     : 'https://ssl.reddit.com/api/login?api_type=json&user=' + argv.user + '&passwd=' + argv.pass + '&rem=True',
-      headers : {
-        'User-Agent' : 'skitBot/0.1 by SketchNotSkit'
-      },
-      method  : 'POST'
-  };
-
-  request(options, function (err, res, body) {
-    if (err) {
-      console.log('caught an error logging in, here\'s the hash:');
-      console.log(err.json.errors);
-      return;
-    } else {
-      var parsedBody = JSON.parse(body);
-      modhash = parsedBody.json.data.modhash;
-      cookie  = parsedBody.json.data.cookie;
-      setInterval(exports.workQueue, 3000);
-    }
-  });
+function postSkitComment (id) {
+  var text = 'I think you mean [sketch](http://en.wikipedia.org/wiki/Sketch_comedy).'
+  postComment( { parent : id, text : text }, credentials[0], postPedantComment);
 }
 
-function fetchComments () {
-  var mindate = (typeof youngest === 'undefined') ? '' : '&mindate=' + youngest;
-  needle.get( 'http://api.redditanalytics.com/getRecent.php?limit=500', {timeout: 5000}, function (err, res, body) {
-    if (err){
-      console.log('caught an error fetching comments, here\'s the hash:');
-      console.log(err.stack);
-      return;
-    }
-    exports.result = body;
-    youngest       = body.metadata.newest_date;
-
-    for (var i=0; i < body.data.length; i++) {
-      var targets = [ body.data[i].body.toLowerCase() ]
-        , id      = body.data[i].name;
-
-      if(body.data[i].name) {
-        targets.push(body.data[i].name.toLowerCase());
-      }
-
-      if( targetsContain(targets) && exports.found.indexOf(id) === -1) {
-        console.log(body.data[i].body);
-
-        exports.queue.push(id);
-        exports.found.push(id);
-      }
-    }
-    console.log(exports.queue);
- });
+function postPedantComment (id) {
+  var nextText = "You'll have to excuse SketchNotSkit's [pedanticism](http://en.wikipedia.org/wiki/Pedant)."
+  postComment({ parent : id, text : text }, credentials[1], function(id){
+    console.log('Sequence ' + id + ' posted.');
+  })
 }
+
+
+// and push messages into the queue
+
+
+
+// message : {
+//   parent  : ID
+//   message : String
+// }
