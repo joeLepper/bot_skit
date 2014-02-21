@@ -6,8 +6,13 @@ var pg           = require('pg')
   , bots         = require('./bots');
 
 var foundReplies = []
-  , conString    = 'postgres://jlepper:5432@localhost/jlepper';
-
+, connectOptions = {
+    user: 'jlepper',
+    password: process.env.BOT_SKIT_DB_PASS,
+    database: 'jlepper',
+    host: 'localhost',
+    port: 5432
+  };
 setInterval(checkReplies, 100);
 
 module.exports = function (inbound) {
@@ -22,7 +27,7 @@ module.exports = function (inbound) {
 };
 
 function findResponse (message) {
-  pg.connect(conString, function (err, client, done) {
+  pg.connect(connectOptions, function (err, client, done) {
     if (err) {
       console.log(err);
       return;

@@ -1,6 +1,14 @@
 var next    = require('./message_queue').next
   , request = require('request')
-  , pg      = require('pg');
+  , pg      = require('pg')
+
+  , connectOptions = {
+      user: 'jlepper',
+      password: process.env.BOT_SKIT_DB_PASS,
+      database: 'jlepper',
+      host: 'localhost',
+      port: 5432
+    };
 
 module.exports = function () {
   var message = next();
@@ -56,12 +64,12 @@ function postComment (message) {
 }
 
 function storeComment (messageId, botName) {
-  pg.connect('postgres://jlepper:5432@localhost/jlepper', function (err, client, done) {
+  pg.connect(connectOptions, function (err, client, done) {
     if (err) {
       console.log(err);
       return;
     }
-    var query = client.query('INSERT INTO bot_skit (message_id, boo) VALUES (\'' + messageId + '\', \'' + botName + '\');')
+    var query = client.query('INSERT INTO bot_skit (message_id, bot) VALUES (\'' + messageId + '\', \'' + botName + '\');')
       , account;
 
     query.on('error', function (err) { console.error('DATABASE ERROR:', err); });
