@@ -1,6 +1,7 @@
-var next    = require('./message_queue').next
-  , request = require('request')
-  , pg      = require('pg');
+var next              = require('./message_queue').next
+  , request           = require('request')
+  , pg                = require('pg')
+  , connectionOptions = require('./connection');
 
 module.exports = function () {
   var message = next();
@@ -56,7 +57,7 @@ function postComment (message) {
 }
 
 function storeComment (messageId, botName) {
-  pg.connect('postgres://jlepper@localhost/jlepper', function (err, client, done) {
+  pg.connect(connectionOptions, function (err, client, done) {
     if (err) {
       console.log(err);
       return;

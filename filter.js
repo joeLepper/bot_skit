@@ -1,12 +1,12 @@
-var pg           = require('pg')
-  , request      = require('request')
-  , handleErrors = require('./error_handler')
-  , contains     = require('./target_contain')
-  , queue        = require('./message_queue')
-  , bots         = require('./bots');
+var pg                = require('pg')
+  , request           = require('request')
+  , handleErrors      = require('./error_handler')
+  , contains          = require('./target_contain')
+  , queue             = require('./message_queue')
+  , bots              = require('./bots')
+  , connectionOptions =  require('./connection');
 
-var foundReplies = []
-  , conString    = 'postgres://jlepper@localhost/jlepper';
+var foundReplies = [];
 
 setInterval(checkReplies, 100);
 
@@ -22,7 +22,7 @@ module.exports = function (inbound) {
 };
 
 function findResponse (message) {
-  pg.connect(conString, function (err, client, done) {
+  pg.connect(connectionOptions, function (err, client, done) {
     if (err) {
       console.log(err);
       return;
