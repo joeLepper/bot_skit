@@ -35,7 +35,7 @@ function postComment (message) {
         console.log(body.json.errors);
         return;
       } else {
-        console.log('\n// ------ //\n' + body + '\n// ------ //\n');
+        console.log('\n// ------ //\n', body, '\n// ------ //\n');
         storeComment(body.json.data.things[0].data.id, message[1].name);
       }
     } else {
@@ -45,6 +45,7 @@ function postComment (message) {
 }
 
 function storeComment (messageId, botName) {
+  console.log('\n// ---- // TRYING TO CREATE IN DATABASE // ---- //', messageId, botName);
   pg.connect(connectionOptions, function (err, client, done) {
     if (err) {
       console.log(err);
@@ -54,5 +55,8 @@ function storeComment (messageId, botName) {
       , account;
 
     query.on('error', function (err) { console.error('DATABASE ERROR:', err); });
-    query.on('end',   function ()    { done(); });
+    query.on('end',   function () {
+      console.log('SUCCESS?')
+      done();
+    });
   });}
