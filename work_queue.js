@@ -25,7 +25,7 @@ function postComment (message) {
   request(options, function (err, res, body) {
     console.log(res);
     console.log('STATUS: ' + res.statusCode);
-    if (res.headers.content-type === 'application/json; charset=UTF-8') {
+    if (res.headers['content-type'] === 'application/json; charset=UTF-8') {
       body = JSON.parse(body);
       if (err) {
         console.log('COMMENT ERROR:');
