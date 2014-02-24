@@ -1,7 +1,7 @@
 var enqueue = require('./message_queue').enqueue;
 
 module.exports = function contains (message, bot) {
-  console.log(bot);
+  // console.log(bot);
   var strings = bot.filter.keywords;
   for (var j = 0; j < strings.length; j++) {
     // console.log('\n // ==== inside contains loop ==== //\n');
