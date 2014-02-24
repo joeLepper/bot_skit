@@ -23,7 +23,7 @@ function postComment (message) {
   console.log(message[1].modhash, message[1].cookie, message[1].message, message[0]);
 
   request(options, function (err, res, body) {
-    console.log(res);
+    // console.log(res);
     console.log('STATUS: ' + res.statusCode);
     if (res.headers['content-type'] === 'application/json; charset=UTF-8') {
       body = JSON.parse(body);
