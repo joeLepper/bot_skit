@@ -23,35 +23,23 @@ function postComment (message) {
   console.log(message[1].modhash, message[1].cookie, message[1].message, message[0]);
 
   request(options, function (err, res, body) {
-    console.log(res.statusCode);
-
-    body = JSON.parse(body);
-
-    // console.log('\n// ------ //');
-    // console.log(typeof body);
-    // console.log('// ------ //');
-    // console.log('\n// ------ //');
-    // console.log(body.json);
-    // console.log('// ------ //');
-    // console.log('\n// ------ //');
-    // console.log(body.json.errors);
-    // console.log('// ------ //');
-    // console.log('\n// ------ //');
-    // console.log(body.json.errors.length);
-    // console.log('// ------ //');
-
-    if (err) {
-      console.log('COMMENT ERROR:');
-      console.log(err.stack);
-      return;
-    } else if (body.json && body.json.errors && body.json.errors.length) {
-      console.log(body.json.errors);
-      return;
+    console.log(res);
+    console.log('STATUS: ' + res.statusCode);
+    if (res.headers.content-type === 'application/json; charset=UTF-8') {
+      body = JSON.parse(body);
+      if (err) {
+        console.log('COMMENT ERROR:');
+        console.log(err.stack);
+        return;
+      } else if (body.json && body.json.errors && body.json.errors.length) {
+        console.log(body.json.errors);
+        return;
+      } else {
+        console.log('\n// ------ //\n' + body + '\n// ------ //\n');
+        storeComment(body.json.data.things[0].data.id, message[1].name);
+      }
     } else {
-      console.log('// ------ //');
-      console.log(body);
-      console.log('// ------ //');
-      storeComment(body.json.data.things[0].data.id, message[1].name);
+      console.log('\n// ------ //\nFORBIDDEN\n// ------ //\n' + body + '\n// ------ //\nFORBIDDEN\n// ------ //\n');
     }
   });
 }

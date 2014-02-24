@@ -23,6 +23,4 @@ function createBots () {
   }
 }
 
-
-
 createBots();

@@ -21,8 +21,10 @@ module.exports = function readComments (success) {
        if (checkErrors(err, 'READ ERROR:')) { return; }
 
        console.log(body.data.children.length + ' NEW ENTRIES');
-       before = '&before=' + body.data.children[0].data.name;
-       success(body.data.children);
+       if (body.data.children.length) {
+        before = '&before=' + body.data.children[0].data.name;
+        success(body.data.children);
+       }
     });
   }
 };
