@@ -5,7 +5,7 @@ var fetch        = require('./fetcher')
   , register     = require('./bots').register
   , yaml         = require('js-yaml')
   , fs           = require('fs')
-  , botInits     = yaml.safeLoad(fs.readFileSync('bots.yaml', 'utf8'));
+  , botInits     = yaml.safeLoad(fs.readFileSync('bots.yml', 'utf8'));
 
 console.log(botInits);
 

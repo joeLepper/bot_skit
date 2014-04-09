@@ -16,3 +16,21 @@ Please use it for good.
 
 ## `bots.yml`
 
+To use `bot_skit` you must specify a `bots.yml` file. `bots.yml` defines a list of `bot` objects which each look for and respond with a particular type of message. A `bot` object looks like this:
+
+```
+
+- name: BillyPilgrim
+  pass: pooteeweet
+  message: [So it goes.](http://en.wikipedia.org/wiki/billy_pilgrim).
+  isParent: true
+  filter:
+    parent: hunter
+    keywords:
+      - ' skit '
+      - ' skits '
+
+```
+
+## messages
+
