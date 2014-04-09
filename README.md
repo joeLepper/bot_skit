@@ -1,6 +1,8 @@
-# Skit Bot
+# bot_skit
 
-## I think you mean [sketch](http://en.wikipedia.org/wiki/Sketch_comedy).
+## Concept
+
+## Installation
 
 To run an instance of skitbot simply (make sure that you have node installed):
 
