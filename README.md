@@ -1,13 +1,77 @@
-# Skit Bot
+# `bot_skit`
 
-## I think you mean [sketch](http://en.wikipedia.org/wiki/Sketch_comedy).
+`bot_skit` is a jumping-off-point for building complex interactions with strangers on Reddit. Through its use, you are able to watch Reddit's stream of comments and react to certain phrases by posting replies.  You may also watch for and respond to direct replies to your previous comments.
 
-To run an instance of skitbot simply (make sure that you have node installed):
+Please use it for good.
 
-1. clone this repo
+## installation
+
+`bot_skit` is simple to set up.
+
+1. ensure that node is [installed](http://thechangelog.com/install-node-js-with-homebrew-on-os-x/)
+2. clone this repo
 2. run `npm install`
-3. `node index.js --user=USERNAME --pass=PASSWORD`
+3. setup a [`bots.yml`](#botsyml)
+4. `node init.js`
 
-## altering the bot's behavior
+## `bots.yml`
 
-At its heart skitBot is a bot which pores over the comments that come into Reddit and watches for the strings `' skit '` and `' skits '`, then responds with `'I think you mean [sketch](http://en.wikipedia.org/wiki/Sketch_comedy)'`. If your bot has similar behavior, feel free to fork the repo and alter these strings to your heart's content.
+TODO: Will need to better configure the passing of the header to the bot
+
+To use `bot_skit` you must specify a `bots.yml` file. `bots.yml` defines a list of `bot` objects which each look for and respond with a particular type of message. A `bot` object looks like this:
+
+```yaml
+
+- name: BillyPilgrim
+  pass: pooteeweet
+  message: [So it goes.](http://en.wikipedia.org/wiki/billy_pilgrim).
+  isParent: true
+  filter:
+    parent: hunter
+    keywords:
+      - 'kilgore'
+      - 'trout'
+
+```
+
+If you're not familiar with yaml, you'll be defining an array of objects that look like this:
+
+```javascript
+
+[{
+  name     : String,
+  pass     : String,
+  message  : String <Markdown>,
+  isParent : Boolean (optional),
+  filter   : {
+    parent   : String (optional),
+    keywords : [String]
+  }
+}]
+
+```
+
+A `bot_skit` requires one parent bot and may contain any number of children, grand children, et cetera
+
+### `name`
+
+`name String` the account that `bot_skit` will log in as to send the associated message. You'll have to have previously set up this account.
+
+### `pass`
+
+`pass String` the password associated with `name`
+
+### ` message`
+
+`message String` a string of markdown that describes the comment to be posted
+
+### isParent
+
+`isParent Boolean` an optional parameter describing whether or not the `bot` has any children watching for its replies. Defaults to `false`.
+
+### filter
+
+`filter Object` describes the type of comments that a `bot` will respond to. It contains one `keyword` and one optional `parent` param.
+
+* `keywords` is a list of strings to watch for
+* `parent` is an optional String which matches another bot in the troupe
