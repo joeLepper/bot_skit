@@ -47,6 +47,8 @@ If you're not familiar with yaml, you'll be defining an array of objects that lo
   }
 }]
 
+```
+
 A `bot_skit` requires one parent bot and may contain any number of children, grand children, et cetera
 
 ### `name`
