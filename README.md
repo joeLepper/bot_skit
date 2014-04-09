@@ -18,7 +18,7 @@ Please use it for good.
 
 To use `bot_skit` you must specify a `bots.yml` file. `bots.yml` defines a list of `bot` objects which each look for and respond with a particular type of message. A `bot` object looks like this:
 
-```
+```yaml
 
 - name: BillyPilgrim
   pass: pooteeweet
