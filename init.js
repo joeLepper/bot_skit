@@ -1,13 +1,13 @@
-var fetch        = require('./fetcher')
-  , filter       = require('./filter')
-  , work         = require('./work_queue')
-  , login        = require('./login')
-  , register     = require('./bots').register
-  , yaml         = require('js-yaml')
-  , fs           = require('fs')
-  , botInits     = yaml.safeLoad(fs.readFileSync('bots.yml', 'utf8'));
+var fetch    = require('./fetcher')
+  , filter   = require('./filter')
+  , work     = require('./work_queue')
+  , login    = require('./login')
+  , register = require('./bots').register
+  , yaml     = require('js-yaml')
+  , fs       = require('fs')
+  , bots     = yaml.safeLoad(fs.readFileSync('bots.yml', 'utf8'));
 
-console.log(botInits);
+console.log(bots);
 
 setInterval(function () {
   fetch(function (comments) {
@@ -18,8 +18,8 @@ setInterval(function () {
 setInterval(work, 4000);
 
 function createBots () {
-  for(var i = 0; i < botInits.length; i++) {
-    login(botInits[i], register);
+  for(var i = 0; i < bots.length; i++) {
+    login(bots[i], register);
   }
 }
 

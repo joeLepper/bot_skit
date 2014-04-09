@@ -15,7 +15,7 @@ exports.register = function (bot) {
   console.log('\n// --------- REGISTERING ------------// \n');
   console.log(bot);
   if (bot.isParent) { parentBots.push(bot); }
-  else              { childBots.push(bot);  }
+  else { childBots.push(bot);  }
 };
 
 exports.check = function () {

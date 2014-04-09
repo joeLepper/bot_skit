@@ -16,6 +16,8 @@ Please use it for good.
 
 ## `bots.yml`
 
+TODO: Will need to better configure the passing of the header to the bot
+
 To use `bot_skit` you must specify a `bots.yml` file. `bots.yml` defines a list of `bot` objects which each look for and respond with a particular type of message. A `bot` object looks like this:
 
 ```yaml
@@ -73,6 +75,3 @@ A `bot_skit` requires one parent bot and may contain any number of children, gra
 
 * `keywords` is a list of strings to watch for
 * `parent` is an optional String which matches another bot in the troupe
-
-## messages
-
