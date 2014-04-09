@@ -1,4 +1,4 @@
-# bot_skit
+# `bot_skit`
 
 `bot_skit` is a jumping-off-point for building complex interactions with strangers on Reddit. Through its use, you are able to watch Reddit's stream of comments and react to certain phrases by posting replies.  You may also watch for and respond to direct replies to your previous comments.
 
