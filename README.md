@@ -11,7 +11,7 @@ Please use it for good.
 1. ensure that node is [installed](http://thechangelog.com/install-node-js-with-homebrew-on-os-x/)
 2. clone this repo
 2. run `npm install`
-3. setup a `bots.yml`
+3. setup a [`bots.yml`](#botsyml)
 4. `node init.js`
 
 ## `bots.yml`
@@ -39,10 +39,10 @@ If you're not familiar with yaml, you'll be defining an array of objects that lo
 [{
   name     : String,
   pass     : String,
-  message  : String<Markdown>,
-  isParent : Boolean(optional),
+  message  : String <Markdown>,
+  isParent : Boolean (optional),
   filter   : {
-    parent   : String(optional),
+    parent   : String (optional),
     keywords : [String]
   }
 }]
