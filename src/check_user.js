@@ -1,22 +1,23 @@
-var request  = require('request')
+var request = require('request')
+  , header  = require('bots').getHeader()
 
 exports = function checkUser () {
   var options = {
         url      : 'https://en.reddit.com/api/me.json',
         headers  : {
-            'User-Agent' : 'skitBot/0.1 by SketchNotSkit',
+            'User-Agent' : header,
             'X-Modhash'  : modhash,
             'Cookie' : 'reddit_session=' + encodeURIComponent(cookie)
           },
         method : 'GET',
-      };
+      }
 
   request(options, function (err, res, body) {
     if (err) {
-      console.error('REQUEST ERROR', err);
-      return;
+      console.error('REQUEST ERROR', err)
+      return
     } else {
-      console.log('\n// ------ //', body, '// ------ //\n');
+      console.log('\n// ------ //', body, '// ------ //\n')
     }
-  });
-};
+  })
+}
